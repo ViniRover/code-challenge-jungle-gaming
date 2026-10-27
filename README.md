@@ -11,6 +11,8 @@ Implementação do desafio frontend Jungle Gaming, com descoberta, compra e cont
 Requer Docker Desktop/Engine iniciado e Compose v2. Não precisa de Node no host.
 
 ```bash
+git clone https://github.com/ViniRover/code-challenge-jungle-gaming.git
+cd code-challenge-jungle-gaming
 docker compose up --build -d
 # http://localhost:4173
 docker compose ps
@@ -75,6 +77,9 @@ Eventos de preço/estoque alteram o banco e passam pelo Socket.IO interceptado. 
 
 ```bash
 npm run check                  # tipos, lint, testes unitários e build
+npm run typecheck              # somente TypeScript
+npm run lint                   # somente ESLint
+npm run lint:fix               # corrige espaçamento e demais regras automáticas
 npx playwright install chromium
 npm run test:e2e               # inicia preview se necessário
 npx playwright show-report

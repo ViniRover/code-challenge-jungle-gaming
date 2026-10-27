@@ -38,3 +38,9 @@ Todas as medianas atingiram as metas do enunciado (90/95/95/90). Lighthouse 13.5
 A demonstração agora abre por botão fixo, sem substituir a rota atual. O painel é não modal, tem rolagem própria, fecha por X/Escape e restaura foco no botão. /demo redireciona ao início com painel aberto. Controles continuam usando MSW e Socket.IO; o carregamento dos controles é sob demanda.
 
 Verificação desta atualização: tipos, lint, 9 testes unitários e build aprovados; 8 testes de compra/painel em desktop/mobile aprovados; 2 testes visuais aprovados após atualizar as 8 baselines. As auditorias Lighthouse e os relatórios compactados acima registram a entrega inicial, anterior ao widget; não foram repetidos nesta alteração de interface.
+
+### Correspondência da publicação e checkout limpo
+
+Na revisão de entrega em 27/10/2026, a CI Linux do commit 28bd280 concluiu npm ci, tipos, lint, testes unitários, build e testes E2E funcionais com sucesso em checkout limpo: https://github.com/ViniRover/code-challenge-jungle-gaming/actions/runs/40601782976.
+
+A varredura do Tailwind foi restringida explicitamente a src para impedir classes adicionais provenientes de arquivos auxiliares no ambiente de hospedagem. Após republicar, os 31 arquivos JavaScript/CSS do build local tiveram SHA-256 idêntico aos arquivos públicos. A comparação visual das oito telas continuou passando. As nove URLs verificadas (início, detalhe, carrinho, checkout, login, cadastro, perfil, carteiras e pedido) responderam HTTP 200 com fallback SPA; autorização e recursos inexistentes são tratados pelo Router/API. Testes públicos de compra, refresh e Socket.IO estão descritos nas seções anteriores.
