@@ -1,5 +1,6 @@
 import type { QuoteLine } from "../../../shared/domain/models";
 import { eth } from "../../../shared/domain/money";
+
 export function OrderLines({ items }: { items: QuoteLine[] }) {
   return (
     <div className="order-lines">

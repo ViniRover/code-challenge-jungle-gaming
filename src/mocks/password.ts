@@ -3,6 +3,7 @@ export async function hashPassword(
   salt: string,
 ): Promise<string> {
   const encoder = new TextEncoder();
+
   const key = await crypto.subtle.importKey(
     "raw",
     encoder.encode(password),
@@ -10,6 +11,7 @@ export async function hashPassword(
     false,
     ["deriveBits"],
   );
+
   const bits = await crypto.subtle.deriveBits(
     {
       name: "PBKDF2",
@@ -20,6 +22,7 @@ export async function hashPassword(
     key,
     256,
   );
+
   return Array.from(new Uint8Array(bits), (b) =>
     b.toString(16).padStart(2, "0"),
   ).join("");

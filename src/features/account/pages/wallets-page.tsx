@@ -7,14 +7,19 @@ import type { Wallet } from "../../../shared/domain/models";
 import { Button } from "../../../shared/ui/button";
 import { ErrorState, Skeleton } from "../../../shared/ui/feedback";
 import { usePageTitle } from "../../../shared/hooks/use-page-title";
+
 export default function WalletsPage() {
   usePageTitle("Carteiras");
+
   const query = useWallets();
   const { data: session } = useSession();
   const [editing, setEditing] = useState<Wallet>();
+
   if (query.isPending) return <Skeleton className="detail-skeleton" />;
+
   if (query.isError)
     return <ErrorState error={query.error} retry={() => query.refetch()} />;
+
   const empty = (): Wallet => ({
     id: crypto.randomUUID(),
     name: "",
@@ -27,8 +32,10 @@ export default function WalletsPage() {
     ens: "",
     referral: "KURIO",
   });
+
   const primary = query.data.find((w) => w.primary) || query.data[0];
   const current = editing || primary || empty();
+
   return (
     <AccountLayout>
       <div className="section-heading">

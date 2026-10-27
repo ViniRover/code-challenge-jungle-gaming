@@ -1,5 +1,6 @@
 import { http } from "../../shared/api/client";
 import type { Cart, CartLine, Quote } from "../../shared/domain/models";
+
 export const cartApi = {
   get: (signal?: AbortSignal) =>
     http.get<Cart>("/cart", { signal }).then((r) => r.data),

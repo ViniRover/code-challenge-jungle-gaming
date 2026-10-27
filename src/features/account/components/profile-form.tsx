@@ -11,13 +11,17 @@ import { Button } from "../../../shared/ui/button";
 import { ErrorState } from "../../../shared/ui/feedback";
 import { accountApi } from "../api";
 import { keys } from "../../../shared/api/keys";
+
 export function ProfileForm({ user }: { user: User }) {
   const qc = useQueryClient();
+
   const form = useForm<Omit<User, "id">>({
     resolver: zodResolver(profileSchema),
     defaultValues: user,
   });
+
   const avatar = form.watch("avatar");
+
   const m = useMutation({
     mutationFn: accountApi.update,
     onError: (error) => applyFormErrors(error, form.setError),
@@ -25,9 +29,11 @@ export function ProfileForm({ user }: { user: User }) {
       qc.setQueryData<Session>(keys.session, (old) =>
         old?.user.id === data.id ? { ...old, user: data } : old,
       );
+
       toast.success("Perfil atualizado.");
     },
   });
+
   const fields = [
     ["name", "Nome de exibição"],
     ["username", "Nome de usuário"],
@@ -35,6 +41,7 @@ export function ProfileForm({ user }: { user: User }) {
     ["ens", "Nome ENS"],
     ["walletNickname", "Apelido da carteira"],
   ] as const;
+
   return (
     <form onSubmit={form.handleSubmit((data) => m.mutate(data))} noValidate>
       <div className="form-grid">
@@ -68,19 +75,25 @@ export function ProfileForm({ user }: { user: User }) {
               accept="image/png,image/jpeg,image/webp"
               onChange={(event) => {
                 const file = event.target.files?.[0];
+
                 if (!file) return;
+
                 if (
                   file.size > 400000 ||
                   !["image/png", "image/jpeg", "image/webp"].includes(file.type)
                 ) {
                   toast.error("Escolha PNG, JPG ou WebP de até 400 KB.");
+
                   return;
                 }
+
                 const reader = new FileReader();
+
                 reader.onload = () =>
                   form.setValue("avatar", String(reader.result), {
                     shouldDirty: true,
                   });
+
                 reader.readAsDataURL(file);
               }}
             />

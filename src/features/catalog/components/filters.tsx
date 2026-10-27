@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CatalogSearch } from "../../../shared/domain/models";
 import { Button } from "../../../shared/ui/button";
+
 const categories = [
   "Arte digital",
   "Fotografia",
@@ -12,6 +13,7 @@ const categories = [
   "Assinaturas",
   "Utilidade",
 ];
+
 export function Filters({
   search,
   onChange,
@@ -21,6 +23,7 @@ export function Filters({
 }) {
   const [min, setMin] = useState(search.min || "0.02");
   const [max, setMax] = useState(search.max || "12.30");
+
   return (
     <div className="filters">
       <h2>Coleções</h2>

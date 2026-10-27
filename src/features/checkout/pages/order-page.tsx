@@ -18,17 +18,21 @@ import {
 } from "../../../shared/ui/dialog";
 import { usePageTitle } from "../../../shared/hooks/use-page-title";
 import { draftStorage } from "../draft-storage";
+
 export default function OrderPage() {
   const { id } = useParams({ strict: false }) as { id: string };
   const owner = useIdentity();
   const qc = useQueryClient();
+
   const query = useQuery({
     queryKey: keys.order(owner, id),
     queryFn: ({ signal }) => orderApi.get(id, signal),
     refetchInterval: (q) => (q.state.data?.status === "pending" ? 2000 : false),
   });
+
   const [explorer, setExplorer] = useState(false);
   const order = query.data;
+
   usePageTitle(
     order?.status === "confirmed"
       ? "Pedido confirmado"
@@ -36,17 +40,24 @@ export default function OrderPage() {
         ? "Pagamento recusado"
         : "Pedido pendente",
   );
+
   useEffect(() => {
     if (order && order.status !== "pending") {
       attemptStorage.clear(owner);
+
       if (order.status === "confirmed") draftStorage.clear(owner);
+
       qc.invalidateQueries({ queryKey: keys.cart(owner) });
     }
   }, [order?.status, owner, qc]);
+
   if (query.isPending) return <Skeleton className="receipt-skeleton" />;
+
   if (query.isError)
     return <ErrorState error={query.error} retry={() => query.refetch()} />;
+
   if (!order) return null;
+
   return (
     <section className="receipt">
       <div className="receipt-heading">

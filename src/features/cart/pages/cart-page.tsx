@@ -8,19 +8,24 @@ import { buttonVariants, Button } from "../../../shared/ui/button";
 import { EmptyState, ErrorState, Skeleton } from "../../../shared/ui/feedback";
 import { RelatedNfts } from "../../catalog/components/related-nfts";
 import { usePageTitle } from "../../../shared/hooks/use-page-title";
+
 export default function CartPage() {
   usePageTitle("Carrinho de NFTs");
+
   const cart = useCart();
   const quote = useQuote();
   const m = useCartMutation();
+
   if (cart.isPending)
     return (
       <div role="status" aria-label="Carregando carrinho">
         <Skeleton className="cart-skeleton" />
       </div>
     );
+
   if (cart.isError)
     return <ErrorState error={cart.error} retry={() => cart.refetch()} />;
+
   return (
     <>
       <p className="breadcrumb">Início / Mercado / Carrinho</p>

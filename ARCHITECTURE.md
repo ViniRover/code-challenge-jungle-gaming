@@ -49,3 +49,7 @@ Button/Dialog seguem shadcn/ui via cva/Tailwind/Radix. Foco visível, skip link,
 Chunks por rota, WebP, fontes locais e gzip. Vercel tem fallback SPA e Service Worker sem cache persistente. Docker produção não inclui node_modules e não roda como root. CI cobre tipos/lint/unidade/build/E2E. Baselines visuais são Windows; relatórios registram condições.
 
 Não há blockchain, OAuth, carteira externa ou pagamento real, conforme escopo. Nenhum dado é enviado a esses serviços. Desativar MSW exige backend compatível. Simulação local não pretende validar economicamente redes/tokens nem funcionar como produto financeiro.
+
+### Painel de demonstração
+
+Os controles foram extraídos para features/demo/demo-controls.tsx e carregados sob demanda pelo demo-widget.tsx. O layout contém um acionador fixo; Dialog Radix não modal mantém a página interativa, sem overlay ou navegação ao abrir/fechar. O painel tem altura limitada ao viewport, rolagem interna e posição acima da navegação mobile. A rota /demo permanece como redirecionamento compatível. Erros e estado pendente das ações são tratados por TanStack Query.

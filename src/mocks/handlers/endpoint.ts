@@ -1,6 +1,7 @@
 import { delay, HttpResponse } from "msw";
 import { ZodError } from "zod";
 import { db, MockError } from "../database";
+
 export function endpoint(
   action: (
     request: Request,
@@ -17,6 +18,7 @@ export function endpoint(
     try {
       const path = new URL(request.url).pathname;
       const scenario = db.demo.scenario;
+
       if (!path.includes("/__demo")) {
         await delay(
           scenario === "slow"
@@ -27,19 +29,23 @@ export function endpoint(
                 : 80
               : db.demo.latency,
         );
+
         if (scenario === "offline") return HttpResponse.error();
+
         if (scenario === "forbidden" && path === "/api/profile")
           throw new MockError(
             "Você não tem permissão para acessar este recurso.",
             403,
             "FORBIDDEN",
           );
+
         if (scenario === "server-error" && path === "/api/nfts")
           throw new MockError(
             "Serviço temporariamente indisponível.",
             503,
             "TRANSIENT",
           );
+
         if (
           scenario === "favorite-error" &&
           request.method === "PUT" &&
@@ -51,7 +57,9 @@ export function endpoint(
             "TRANSIENT",
           );
       }
+
       const result = await action(request, params);
+
       return result instanceof Response
         ? result
         : HttpResponse.json(result === undefined ? {} : result);
@@ -61,6 +69,7 @@ export function endpoint(
           { message: error.message, code: error.code, fields: error.fields },
           { status: error.status },
         );
+
       if (error instanceof ZodError)
         return HttpResponse.json(
           {
@@ -72,7 +81,9 @@ export function endpoint(
           },
           { status: 422 },
         );
+
       console.error(error);
+
       return HttpResponse.json(
         { message: "Falha inesperada na simulação.", code: "INTERNAL" },
         { status: 500 },

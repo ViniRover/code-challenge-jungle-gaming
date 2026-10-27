@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "../../../shared/ui/dialog";
+
 export function WalletSelector({
   wallets,
   selected,
@@ -25,6 +26,7 @@ export function WalletSelector({
   onConnection: (v: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
+
   const m = useMutation({
     mutationFn: (decision: string) =>
       http.post("/connections", { walletId: selected, decision }),
@@ -39,6 +41,7 @@ export function WalletSelector({
       setOpen(false);
     },
   });
+
   return (
     <section className="wallet-selector">
       <div className="section-heading">

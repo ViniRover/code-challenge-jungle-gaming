@@ -1,6 +1,7 @@
 import { AlertCircle, SearchX } from "lucide-react";
 import { errorMessage } from "../api/client";
 import { Button } from "./button";
+
 export function ErrorState({
   error,
   retry,
@@ -20,6 +21,7 @@ export function ErrorState({
     </div>
   );
 }
+
 export function EmptyState({
   title,
   children,
@@ -35,9 +37,11 @@ export function EmptyState({
     </div>
   );
 }
+
 export function Skeleton({ className = "" }: { className?: string }) {
   return <div className={`skeleton ${className}`} aria-hidden="true" />;
 }
+
 export function LoadingGrid() {
   return (
     <div role="status" aria-label="Carregando NFTs">

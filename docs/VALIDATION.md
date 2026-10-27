@@ -32,3 +32,9 @@ Resultados e metadados finais das doze medições: Os arquivos HTML/JSON complet
 | detail | mobile | 90 | 100 | 100 | 92 | 3364.1 | 0 | 17.5 |
 | detail | desktop | 99 | 100 | 100 | 92 | 800.4 | 0.00791 | 0 |
 Todas as medianas atingiram as metas do enunciado (90/95/95/90). Lighthouse 13.5.0, Chromium 156.0.8078.4, CPU Intel(R) Core(TM) i9-10900F CPU @ 2.80GHz. Performance mobile é limitada principalmente pelo custo inicial de carregar React, MSW e a arte principal sob throttling; as funcionalidades de demonstração foram mantidas. CLS mobile foi zero. Otimizações usadas: WebP, fontes locais, importação paralela do app/MSW, chunks por rota, gzip e reserva de espaço de skeletons.
+
+## Atualização: painel flutuante de demonstração
+
+A demonstração agora abre por botão fixo, sem substituir a rota atual. O painel é não modal, tem rolagem própria, fecha por X/Escape e restaura foco no botão. /demo redireciona ao início com painel aberto. Controles continuam usando MSW e Socket.IO; o carregamento dos controles é sob demanda.
+
+Verificação desta atualização: tipos, lint, 9 testes unitários e build aprovados; 8 testes de compra/painel em desktop/mobile aprovados; 2 testes visuais aprovados após atualizar as 8 baselines. As auditorias Lighthouse e os relatórios compactados acima registram a entrega inicial, anterior ao widget; não foram repetidos nesta alteração de interface.

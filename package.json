@@ -9,13 +9,14 @@
     "preview": "node scripts/serve.mjs",
     "typecheck": "tsc -b",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test:e2e": "playwright test",
     "dev:mocks": "vite --host 0.0.0.0",
     "test:unit": "vitest run tests/unit",
     "test:visual": "playwright test visual.spec.ts",
     "test:visual:update": "playwright test visual.spec.ts --update-snapshots",
     "audit": "node scripts/lighthouse.mjs",
-    "format": "prettier --write src tests scripts",
+    "format": "prettier --write src tests scripts eslint.config.js && npm run lint:fix",
     "check": "npm run typecheck && npm run lint && npm run test:unit && npm run build"
   },
   "dependencies": {

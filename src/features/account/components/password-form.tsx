@@ -8,6 +8,7 @@ import { accountApi } from "../api";
 import { Field } from "../../../shared/ui/field";
 import { Button } from "../../../shared/ui/button";
 import { ErrorState } from "../../../shared/ui/feedback";
+
 export function PasswordForm() {
   const form = useForm<{
     currentPassword: string;
@@ -17,6 +18,7 @@ export function PasswordForm() {
     resolver: zodResolver(passwordSchema),
     defaultValues: { currentPassword: "", password: "", confirm: "" },
   });
+
   const m = useMutation({
     mutationFn: accountApi.password,
     onError: (error) => applyFormErrors(error, form.setError),
@@ -25,6 +27,7 @@ export function PasswordForm() {
       toast.success("Senha alterada.");
     },
   });
+
   return (
     <form
       className="password-form"

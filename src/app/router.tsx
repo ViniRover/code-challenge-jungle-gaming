@@ -11,6 +11,7 @@ import { queryClient } from "./query-client";
 import { authApi } from "../features/auth/api";
 import { keys } from "../shared/api/keys";
 import type { CatalogSearch } from "../shared/domain/models";
+
 const root = createRootRoute({
   component: AppLayout,
   errorComponent: ({ error }) => (
@@ -21,8 +22,10 @@ const root = createRootRoute({
     </div>
   ),
 });
+
 const privateGuard = async ({ location }: { location: { href: string } }) => {
   let session;
+
   try {
     session = await queryClient.fetchQuery({
       queryKey: keys.session,
@@ -32,9 +35,11 @@ const privateGuard = async ({ location }: { location: { href: string } }) => {
   } catch {
     session = null;
   }
+
   if (!session)
     throw redirect({ to: "/login", search: { redirect: location.href } });
 };
+
 const home = createRoute({
   getParentRoute: () => root,
   path: "/",
@@ -56,6 +61,7 @@ const home = createRoute({
     () => import("../features/catalog/pages/catalog-page"),
   ),
 });
+
 const detail = createRoute({
   getParentRoute: () => root,
   path: "/nft/$id",
@@ -63,6 +69,7 @@ const detail = createRoute({
     () => import("../features/catalog/pages/detail-page"),
   ),
 });
+
 const cart = createRoute({
   getParentRoute: () => root,
   path: "/cart",
@@ -70,9 +77,11 @@ const cart = createRoute({
     () => import("../features/cart/pages/cart-page"),
   ),
 });
+
 const authSearch = (s: Record<string, unknown>): { redirect?: string } => ({
   redirect: typeof s.redirect === "string" ? s.redirect : undefined,
 });
+
 const login = createRoute({
   getParentRoute: () => root,
   path: "/login",
@@ -81,6 +90,7 @@ const login = createRoute({
     () => import("../features/auth/pages/auth-page"),
   ),
 });
+
 const register = createRoute({
   getParentRoute: () => root,
   path: "/register",
@@ -89,6 +99,7 @@ const register = createRoute({
     () => import("../features/auth/pages/auth-page"),
   ),
 });
+
 const profile = createRoute({
   getParentRoute: () => root,
   path: "/profile",
@@ -97,6 +108,7 @@ const profile = createRoute({
     () => import("../features/account/pages/profile-page"),
   ),
 });
+
 const wallets = createRoute({
   getParentRoute: () => root,
   path: "/wallets",
@@ -105,6 +117,7 @@ const wallets = createRoute({
     () => import("../features/account/pages/wallets-page"),
   ),
 });
+
 const favorites = createRoute({
   getParentRoute: () => root,
   path: "/favorites",
@@ -113,6 +126,7 @@ const favorites = createRoute({
     () => import("../features/account/pages/favorites-page"),
   ),
 });
+
 const checkout = createRoute({
   getParentRoute: () => root,
   path: "/checkout",
@@ -121,6 +135,7 @@ const checkout = createRoute({
     () => import("../features/checkout/pages/checkout-page"),
   ),
 });
+
 const order = createRoute({
   getParentRoute: () => root,
   path: "/order/$id",
@@ -129,11 +144,15 @@ const order = createRoute({
     () => import("../features/checkout/pages/order-page"),
   ),
 });
+
 const demo = createRoute({
   getParentRoute: () => root,
   path: "/demo",
-  component: lazyRouteComponent(() => import("../features/demo/demo-page")),
+  beforeLoad: () => {
+    throw redirect({ to: "/", hash: "demo" });
+  },
 });
+
 export const router = createRouter({
   routeTree: root.addChildren([
     home,
@@ -161,6 +180,7 @@ export const router = createRouter({
   ),
   scrollRestoration: true,
 });
+
 declare module "@tanstack/react-router" {
   interface Register {
     router: typeof router;

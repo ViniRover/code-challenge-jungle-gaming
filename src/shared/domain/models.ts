@@ -1,5 +1,7 @@
 export type Network = "Ethereum" | "Polygon" | "Solana";
+
 export type Edition = "1/1" | "1/10" | "1/50" | "ABERTA";
+
 export interface Nft {
   id: string;
   name: string;
@@ -14,6 +16,7 @@ export interface Nft {
   featured: boolean;
   createdAt: number;
 }
+
 export interface CatalogSearch {
   q?: string;
   category?: string;
@@ -24,12 +27,14 @@ export interface CatalogSearch {
   max?: string;
   tab?: string;
 }
+
 export interface CatalogPage {
   items: Nft[];
   total: number;
   page: number;
   pageSize: number;
 }
+
 export interface User {
   id: string;
   name: string;
@@ -39,21 +44,25 @@ export interface User {
   walletNickname: string;
   avatar: string;
 }
+
 export interface Session {
   user: User;
   token: string;
   expiresAt: number;
 }
+
 export interface CartLine {
   nftId: string;
   edition: Edition;
   quantity: number;
 }
+
 export interface Cart {
   items: CartLine[];
   coupon: string;
   version: number;
 }
+
 export interface QuoteLine extends CartLine {
   name: string;
   image: string;
@@ -62,6 +71,7 @@ export interface QuoteLine extends CartLine {
   network: Network;
   nftVersion: number;
 }
+
 export interface Quote {
   id: string;
   fingerprint: string;
@@ -73,6 +83,7 @@ export interface Quote {
   total: string;
   expiresAt: number;
 }
+
 export interface Wallet {
   id: string;
   name: string;
@@ -85,11 +96,13 @@ export interface Wallet {
   ens: string;
   referral: string;
 }
+
 export interface OrderRequest {
   quoteId: string;
   walletId: string;
   collector: { name: string; email: string; note: string };
 }
+
 export interface Order {
   id: string;
   userId: string;
@@ -103,6 +116,7 @@ export interface Order {
   resolvesAt: number;
   declineReason?: string;
 }
+
 export interface ResourceEvent<T> {
   id: string;
   resourceId: string;
@@ -110,11 +124,13 @@ export interface ResourceEvent<T> {
   userId?: string;
   data: T;
 }
+
 export interface ApiError {
   message: string;
   code: string;
   fields?: Record<string, string>;
 }
+
 export type Scenario =
   | "standard"
   | "empty"
@@ -129,6 +145,7 @@ export type Scenario =
   | "payment-declined"
   | "order-timeout"
   | "pending-order";
+
 export interface DemoConfig {
   scenario: Scenario;
   latency: number;

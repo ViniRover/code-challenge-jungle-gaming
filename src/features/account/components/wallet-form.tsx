@@ -11,6 +11,7 @@ import { keys } from "../../../shared/api/keys";
 import { Field } from "../../../shared/ui/field";
 import { Button } from "../../../shared/ui/button";
 import { ErrorState } from "../../../shared/ui/feedback";
+
 export function WalletForm({
   wallet,
   onSaved,
@@ -20,10 +21,12 @@ export function WalletForm({
 }) {
   const owner = useIdentity();
   const qc = useQueryClient();
+
   const form = useForm<Wallet>({
     resolver: zodResolver(walletSchema),
     defaultValues: wallet,
   });
+
   const m = useMutation({
     mutationFn: accountApi.saveWallet,
     onError: (error) => applyFormErrors(error, form.setError),
@@ -33,6 +36,7 @@ export function WalletForm({
       onSaved();
     },
   });
+
   return (
     <form onSubmit={form.handleSubmit((data) => m.mutate(data))} noValidate>
       <div className="form-grid">

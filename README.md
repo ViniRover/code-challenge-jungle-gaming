@@ -52,7 +52,7 @@ MSW e Web Crypto precisam de HTTPS ou localhost. Não abra dist por file://. A e
 
 Usuários fictícios `nova@kurio.test` e `luna@kurio.test`, senha `Kurio123!` para ambos. Cadastro também funciona. Senhas persistem somente como hashes PBKDF2 com salt. Use dados fictícios. Cupom `KURIO10` dá 10%; `EXPIRADO` é recusado.
 
-Abra `/demo` pelo rodapé para selecionar cenários, alterar preço/estoque, interromper Socket.IO e resolver pedidos. **Restaurar cenário inicial** restaura contas, senhas, catálogo, carrinhos, carteiras, favoritos e pedidos. A simulação é por aba/navegador; não há sincronização transacional entre abas. Para eventos durante o checkout, use o painel na mesma aba e volte pelo histórico, ou execute os testes, que disparam os mesmos endpoints MSW.
+Clique no botão flutuante **Demonstração** para abrir os controles sobre a página atual, selecionar cenários, alterar preço/estoque, interromper Socket.IO e resolver pedidos. O painel não bloqueia o restante da página; feche pelo X ou Escape. O endereço `/demo` continua compatível e abre o painel no início. **Restaurar cenário inicial** restaura contas, senhas, catálogo, carrinhos, carteiras, favoritos e pedidos. A simulação é por aba/navegador; não há sincronização transacional entre abas. Para eventos durante o checkout, abra o painel na mesma aba e dispare a alteração sem sair da compra. Os testes usam os mesmos endpoints MSW.
 
 | Cenário | Reprodução |
 | --- | --- |

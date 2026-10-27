@@ -1,9 +1,12 @@
 import type { OrderRequest } from "../../shared/domain/models";
+
 export interface CheckoutDraft {
   walletId: string;
   collector: OrderRequest["collector"];
 }
+
 const key = (owner: string) => `kurio.checkout.${owner}`;
+
 export const draftStorage = {
   get(owner: string): CheckoutDraft | null {
     try {

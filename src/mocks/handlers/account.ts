@@ -7,27 +7,33 @@ import {
   walletSchema,
 } from "../../shared/domain/validation";
 import { hashPassword } from "../password";
+
 export const connectionHandlers = [
   http.post(
     "/api/connections",
     endpoint(async (request) => {
       const user = requireUser(request);
+
       const { walletId, decision } = (await request.json()) as {
         walletId: string;
         decision: string;
       };
+
       if (!db.wallets[user.id]?.some((w) => w.id === walletId))
         throw new MockError("Carteira não encontrada.", 404, "NOT_FOUND");
+
       if (decision !== "accept")
         throw new MockError(
           "Conexão recusada pela carteira.",
           422,
           "CONNECTION_DECLINED",
         );
+
       return { connected: true, walletId };
     }),
   ),
 ];
+
 export const accountHandlers = [
   http.get(
     "/api/profile",
@@ -38,6 +44,7 @@ export const accountHandlers = [
     endpoint(async (request) => {
       const user = requireUser(request);
       const data = profileSchema.parse(await request.json());
+
       if (
         db.users.some(
           (u) =>
@@ -51,8 +58,10 @@ export const accountHandlers = [
           "EMAIL_CONFLICT",
           { email: "E-mail já utilizado." },
         );
+
       Object.assign(user, data);
       persist();
+
       return publicUser(user);
     }),
   ),
@@ -61,6 +70,7 @@ export const accountHandlers = [
     endpoint(async (request) => {
       const user = requireUser(request);
       const data = passwordSchema.parse(await request.json());
+
       if (
         (await hashPassword(data.currentPassword, user.salt)) !==
         user.passwordHash
@@ -71,8 +81,10 @@ export const accountHandlers = [
           "INVALID_PASSWORD",
           { currentPassword: "Senha atual incorreta." },
         );
+
       user.passwordHash = await hashPassword(data.password, user.salt);
       persist();
+
       return {};
     }),
   ),
@@ -86,6 +98,7 @@ export const accountHandlers = [
       const user = requireUser(request);
       const data = walletSchema.parse(await request.json());
       const wallets = db.wallets[user.id] || [];
+
       if (
         wallets.some(
           (w) =>
@@ -99,9 +112,12 @@ export const accountHandlers = [
           409,
           "WALLET_CONFLICT",
         );
+
       if (data.primary) wallets.forEach((w) => (w.primary = false));
+
       db.wallets[user.id] = [...wallets.filter((w) => w.id !== data.id), data];
       persist();
+
       return db.wallets[user.id];
     }),
   ),
@@ -113,14 +129,19 @@ export const accountHandlers = [
     "/api/favorites/:id",
     endpoint(async (request, { id }) => {
       const user = requireUser(request);
+
       if (!db.nfts.some((n) => n.id === id))
         throw new MockError("NFT não encontrado.", 404, "NOT_FOUND");
+
       const { selected } = (await request.json()) as { selected: boolean };
       const items = db.favorites[user.id] || [];
+
       db.favorites[user.id] = selected
         ? [...new Set([...items, String(id)])]
         : items.filter((i) => i !== id);
+
       persist();
+
       return db.favorites[user.id];
     }),
   ),

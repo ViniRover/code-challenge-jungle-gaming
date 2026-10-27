@@ -8,8 +8,10 @@ import { accountHandlers, connectionHandlers } from "./handlers/account";
 import { orderHandlers } from "./handlers/orders";
 import { demoHandlers } from "./handlers/demo";
 import { socketHandler } from "./socket";
+
 export async function startMocks() {
   await initializeDatabase();
+
   const worker = setupWorker(
     ...catalogHandlers,
     ...authHandlers,
@@ -20,7 +22,9 @@ export async function startMocks() {
     ...demoHandlers,
     socketHandler,
   );
+
   await worker.start({ onUnhandledRequest: "bypass", quiet: true });
   restoreOrders();
+
   return worker;
 }

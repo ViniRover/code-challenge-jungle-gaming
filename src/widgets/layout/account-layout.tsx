@@ -12,9 +12,11 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useSessionActions } from "../../features/auth/hooks";
+
 export function AccountLayout({ children }: { children: ReactNode }) {
   const { logout } = useSessionActions();
   const navigate = useNavigate();
+
   return (
     <div className="account-layout">
       <aside className="account-sidebar">
@@ -45,6 +47,7 @@ export function AccountLayout({ children }: { children: ReactNode }) {
           [TriangleAlert, "Suporte"],
         ].map(([Icon, label]) => {
           const Component = Icon as typeof Heart;
+
           return (
             <button
               key={String(label)}

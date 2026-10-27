@@ -22,18 +22,24 @@ import { Filters } from "../components/filters";
 import { Hero } from "../components/hero";
 import { Editorial } from "../components/editorial";
 import { usePageTitle } from "../../../shared/hooks/use-page-title";
+
 export default function CatalogPage() {
   usePageTitle("Marketplace de NFTs");
+
   const search = useSearch({ strict: false }) as CatalogSearch;
   const navigate = useNavigate();
   const [filtersOpen, setFiltersOpen] = useState(false);
+
   const update = (patch: CatalogSearch) =>
     navigate({ to: "/", search: { ...search, ...patch } });
+
   const query = useQuery({
     queryKey: keys.catalog(search),
     queryFn: ({ signal }) => catalogApi.list(search, signal),
   });
+
   const pages = Math.ceil((query.data?.total || 0) / 9);
+
   return (
     <>
       <div className="mobile-search">

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
+
 export function Editorial() {
   return (
     <>

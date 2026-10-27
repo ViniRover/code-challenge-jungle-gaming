@@ -1,5 +1,6 @@
 import type { Quote } from "../../../shared/domain/models";
 import { eth } from "../../../shared/domain/money";
+
 export function Totals({ quote }: { quote: Quote }) {
   return (
     <dl className="totals">

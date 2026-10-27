@@ -7,6 +7,7 @@ import { keys } from "../../../shared/api/keys";
 import { eth, multiply } from "../../../shared/domain/money";
 import { Quantity } from "../../../shared/ui/quantity";
 import { Skeleton } from "../../../shared/ui/feedback";
+
 export function CartRow({
   line,
   onChange,
@@ -22,7 +23,9 @@ export function CartRow({
     queryKey: keys.nft(line.nftId),
     queryFn: ({ signal }) => catalogApi.detail(line.nftId, signal),
   });
+
   if (!nft) return <Skeleton className="cart-row-skeleton" />;
+
   return (
     <article className="cart-row">
       <Link to="/nft/$id" params={{ id: nft.id }}>

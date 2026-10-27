@@ -1,4 +1,5 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
+
 export function Field({
   label,
   error,
@@ -12,6 +13,7 @@ export function Field({
   children?: ReactNode;
 }) {
   const fieldId = id || props.name;
+
   return (
     <div className="field">
       <label htmlFor={fieldId}>

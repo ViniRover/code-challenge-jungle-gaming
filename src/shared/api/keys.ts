@@ -1,4 +1,5 @@
 import type { CatalogSearch } from "../domain/models";
+
 export const keys = {
   session: ["session"] as const,
   catalog: (search?: CatalogSearch) => ["catalog", search || {}] as const,

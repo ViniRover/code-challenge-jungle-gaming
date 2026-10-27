@@ -1,24 +1,30 @@
 import { z } from "zod";
+
 const name = z
   .string()
   .trim()
   .min(2, "Informe pelo menos 2 caracteres.")
   .max(80, "Use até 80 caracteres.");
+
 export const email = z.string().trim().email("Informe um e-mail válido.");
+
 export const password = z
   .string()
   .min(8, "Use pelo menos 8 caracteres.")
   .max(128);
+
 export const loginSchema = z.object({
   email,
   password: z.string().min(1, "Informe sua senha."),
 });
+
 export const registerSchema = z
   .object({ name, email, password, confirm: z.string() })
   .refine((v) => v.password === v.confirm, {
     path: ["confirm"],
     message: "As senhas não coincidem.",
   });
+
 export const profileSchema = z.object({
   name,
   username: name,
@@ -27,6 +33,7 @@ export const profileSchema = z.object({
   walletNickname: z.string().max(80),
   avatar: z.string().max(600000),
 });
+
 export const passwordSchema = z
   .object({
     currentPassword: z.string().min(1, "Informe a senha atual."),
@@ -37,6 +44,7 @@ export const passwordSchema = z
     path: ["confirm"],
     message: "As senhas não coincidem.",
   });
+
 export const walletSchema = z
   .object({
     id: z.string(),
@@ -55,6 +63,7 @@ export const walletSchema = z
       v.network === "Solana"
         ? /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(v.address)
         : /^0x[0-9a-fA-F]{40}$/.test(v.address);
+
     if (!valid)
       ctx.addIssue({
         code: "custom",
@@ -62,6 +71,7 @@ export const walletSchema = z
         message: "Endereço incompatível com a rede selecionada.",
       });
   });
+
 export const collectorSchema = z.object({
   name,
   email,

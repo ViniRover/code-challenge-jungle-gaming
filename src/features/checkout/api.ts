@@ -1,5 +1,6 @@
 import { http } from "../../shared/api/client";
 import type { Order, OrderRequest } from "../../shared/domain/models";
+
 export const orderApi = {
   create: (key: string, data: OrderRequest) =>
     http

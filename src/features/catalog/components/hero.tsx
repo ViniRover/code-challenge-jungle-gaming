@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+
 export function Hero() {
   return (
     <section className="hero">

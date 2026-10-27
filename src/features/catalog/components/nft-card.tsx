@@ -6,6 +6,7 @@ import { eth } from "../../../shared/domain/money";
 import { useFavoriteMutation, useFavorites } from "../../account/hooks";
 import { useIdentity } from "../../auth/hooks";
 import { errorMessage } from "../../../shared/api/client";
+
 export function NftCard({
   nft,
   priority = false,
@@ -19,6 +20,7 @@ export function NftCard({
   const navigate = useNavigate();
   const location = useLocation();
   const selected = favorites.data?.includes(nft.id) || false;
+
   return (
     <article className="nft-card">
       <div className="nft-art">
@@ -45,8 +47,10 @@ export function NftCard({
           onClick={() => {
             if (owner === "guest") {
               navigate({ to: "/login", search: { redirect: location.href } });
+
               return;
             }
+
             favorite.mutate(
               { id: nft.id, selected: !selected },
               { onError: (error) => toast.error(errorMessage(error)) },

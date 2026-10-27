@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
 import type { ApiError } from "../domain/models";
+
 export function applyFormErrors<T extends FieldValues>(
   error: unknown,
   setError: UseFormSetError<T>,

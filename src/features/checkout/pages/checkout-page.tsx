@@ -27,24 +27,31 @@ import {
 } from "../../../shared/ui/dialog";
 import { usePageTitle } from "../../../shared/hooks/use-page-title";
 import { draftStorage } from "../draft-storage";
+
 export default function CheckoutPage() {
   usePageTitle("Pagamento");
+
   const owner = useIdentity();
   const { data: session } = useSession();
   const cart = useCart();
   const quote = useQuote();
   const wallets = useWallets();
+
   const [selected, setSelected] = useState(
     () => draftStorage.get(owner)?.walletId || "",
   );
+
   const [connected, setConnected] = useState(false);
   const [review, setReview] = useState<Quote | null>(null);
+
   const [recovery, setRecovery] = useState<Attempt | null>(() =>
     attemptStorage.get(owner),
   );
+
   const [recoveryError, setRecoveryError] = useState<unknown>(null);
   const navigate = useNavigate();
   const submitting = useRef(false);
+
   const form = useForm<OrderRequest["collector"]>({
     resolver: zodResolver(collectorSchema),
     defaultValues: draftStorage.get(owner)?.collector || {
@@ -53,6 +60,7 @@ export default function CheckoutPage() {
       note: "",
     },
   });
+
   useEffect(() => {
     const subscription = form.watch((values) =>
       draftStorage.set(owner, {
@@ -64,18 +72,23 @@ export default function CheckoutPage() {
         },
       }),
     );
+
     return () => subscription.unsubscribe();
   }, [form, owner, selected]);
+
   useEffect(() => {
     draftStorage.set(owner, {
       walletId: selected,
       collector: form.getValues(),
     });
   }, [selected, owner, form]);
+
   const wallet = wallets.data?.find((w) => w.id === selected);
+
   const recover = async (attempt: Attempt) => {
     try {
       const order = await orderApi.attempt(attempt.key);
+
       navigate({ to: "/order/$id", params: { id: order.id } });
     } catch (e) {
       if (axios.isAxiosError(e) && e.response?.status === 404) {
@@ -84,20 +97,26 @@ export default function CheckoutPage() {
       } else setRecoveryError(e);
     }
   };
+
   useEffect(() => {
     const attempt = attemptStorage.get(owner);
+
     if (attempt) recover(attempt);
   }, [owner]);
+
   const purchase = useMutation({
     mutationFn: async () => {
       const latest = await cartApi.quote();
+
       if (!review || latest.fingerprint !== review.fingerprint) {
         setReview(null);
         await quote.refetch();
+
         throw new Error(
           "A cotação mudou. Revise os novos valores e confirme novamente.",
         );
       }
+
       const attempt: Attempt = {
         key: crypto.randomUUID(),
         request: {
@@ -106,8 +125,10 @@ export default function CheckoutPage() {
           collector: form.getValues(),
         },
       };
+
       attemptStorage.set(owner, attempt);
       setRecovery(attempt);
+
       try {
         return await orderApi.create(attempt.key, attempt.request);
       } catch (error) {
@@ -118,8 +139,10 @@ export default function CheckoutPage() {
         ) {
           attemptStorage.clear(owner);
           setRecovery(null);
+
           throw error;
         }
+
         return await orderApi.attempt(attempt.key);
       }
     },
@@ -130,6 +153,7 @@ export default function CheckoutPage() {
       setReview(null);
     },
   });
+
   if (recovery && !purchase.isPending)
     return (
       <div className="recovery-panel">
@@ -147,12 +171,14 @@ export default function CheckoutPage() {
         )}
       </div>
     );
+
   if (cart.data && !cart.data.items.length)
     return (
       <EmptyState title="Seu carrinho está vazio">
         <Link to="/">Explorar NFTs</Link>
       </EmptyState>
     );
+
   return (
     <>
       <p className="breadcrumb">Início / Mercado / Pagamento</p>
@@ -165,9 +191,12 @@ export default function CheckoutPage() {
             onSubmit={form.handleSubmit(async () => {
               if (!connected) {
                 toast.error("Conecte sua carteira para continuar.");
+
                 return;
               }
+
               const latest = await quote.refetch();
+
               if (latest.data) setReview(latest.data);
             })}
             noValidate
@@ -324,6 +353,7 @@ export default function CheckoutPage() {
                 }
                 onClick={() => {
                   if (submitting.current) return;
+
                   submitting.current = true;
                   purchase.mutate();
                 }}

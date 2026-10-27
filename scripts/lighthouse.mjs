@@ -3,11 +3,15 @@ import lighthouse from "lighthouse";
 import { chromium } from "@playwright/test";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import os from "node:os";
+
 const base = process.env.AUDIT_URL || "http://127.0.0.1:4173";
+
 await mkdir("artifacts/lighthouse", { recursive: true });
+
 const results = [];
 let chromiumVersion = "";
 const runs = Number(process.env.AUDIT_RUNS || 3);
+
 for (const page of [
   { name: "home", path: "/" },
   { name: "detail", path: "/nft/042" },
@@ -18,8 +22,11 @@ for (const page of [
         headless: true,
         args: ["--remote-debugging-port=9223"],
       });
+
       const chrome = { port: 9223, kill: () => browser.close() };
+
       chromiumVersion = browser.version();
+
       try {
         const config = {
           extends: "lighthouse:default",
@@ -62,15 +69,20 @@ for (const page of [
             maxWaitForLoad: 45000,
           },
         };
+
         const result = await lighthouse(
           base + page.path,
           { port: chrome.port, output: ["html", "json"], logLevel: "error" },
           config,
         );
+
         const stem = `${page.name}-${profile}-${i}`;
+
         await writeFile(`artifacts/lighthouse/${stem}.html`, result.report[0]);
         await writeFile(`artifacts/lighthouse/${stem}.json`, result.report[1]);
+
         const lhr = result.lhr;
+
         const row = {
           page: page.name,
           profile,
@@ -88,6 +100,7 @@ for (const page of [
           },
           warnings: lhr.runWarnings,
         };
+
         results.push(row);
         console.log(JSON.stringify(row));
       } finally {
@@ -95,14 +108,18 @@ for (const page of [
       }
     }
   }
+
 const median = (values) =>
   [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
+
 const medians = [];
+
 for (const page of ["home", "detail"])
   for (const profile of ["mobile", "desktop"]) {
     const rows = results.filter(
       (r) => r.page === page && r.profile === profile,
     );
+
     medians.push({
       page,
       profile,
@@ -120,9 +137,11 @@ for (const page of ["home", "detail"])
       ),
     });
   }
+
 const packageJson = JSON.parse(
   await readFile("node_modules/lighthouse/package.json", "utf8"),
 );
+
 await writeFile(
   "artifacts/lighthouse/summary.json",
   JSON.stringify(

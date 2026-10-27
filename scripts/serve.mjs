@@ -2,8 +2,10 @@ import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { resolve, extname } from "node:path";
 import { gzipSync } from "node:zlib";
+
 const root = resolve("dist");
 const port = Number(process.env.PORT || 4173);
+
 const mime = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
@@ -14,27 +16,35 @@ const mime = {
   ".svg": "image/svg+xml",
   ".json": "application/json",
 };
+
 createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(
       new URL(req.url, "http://localhost").pathname,
     );
+
     let file = resolve(root, "." + pathname);
+
     if (!file.startsWith(root)) throw new Error("Invalid path");
+
     try {
       if (!(await stat(file)).isFile()) file = resolve(root, "index.html");
     } catch {
       file = resolve(root, "index.html");
     }
+
     res.setHeader(
       "Content-Type",
       mime[extname(file)] || "application/octet-stream",
     );
+
     if (file.endsWith("mockServiceWorker.js")) {
       res.setHeader("Cache-Control", "no-cache");
       res.setHeader("Service-Worker-Allowed", "/");
     }
+
     const content = await readFile(file);
+
     if (
       /\.(js|css|html|json|svg)$/.test(file) &&
       req.headers["accept-encoding"]?.includes("gzip")

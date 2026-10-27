@@ -13,18 +13,23 @@ import {
 import { AuthForm } from "../components/auth-form";
 import CatalogPage from "../../catalog/pages/catalog-page";
 import { usePageTitle } from "../../../shared/hooks/use-page-title";
+
 export default function AuthPage() {
   const location = useLocation();
   const registerMode = location.pathname === "/register";
   const search = useSearch({ strict: false }) as { redirect?: string };
+
   const redirect =
     search.redirect?.startsWith("/") &&
     !search.redirect.startsWith("//") &&
     !/^\/(login|register)/.test(search.redirect)
       ? search.redirect
       : "/profile";
+
   const navigate = useNavigate();
+
   usePageTitle(registerMode ? "Criar conta" : "Entrar");
+
   return (
     <>
       <div className="auth-background" aria-hidden="true" inert>

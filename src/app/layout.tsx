@@ -6,16 +6,20 @@ import { Header } from "../widgets/layout/header";
 import { Footer } from "../widgets/layout/footer";
 import { Realtime } from "./realtime";
 import { keys } from "../shared/api/keys";
+import { DemoWidget } from "../features/demo/demo-widget";
+
 export function AppLayout() {
   const qc = useQueryClient();
   const location = useLocation();
   const navigate = useNavigate();
+
   useEffect(() => {
     const expire = async () => {
       await qc.cancelQueries();
       qc.removeQueries({ queryKey: ["private"] });
       qc.setQueryData(keys.session, null);
       toast.error("Sua sessão expirou. Entre novamente para retomar.");
+
       if (!/^\/(login|register)/.test(window.location.pathname))
         navigate({
           to: "/login",
@@ -24,15 +28,20 @@ export function AppLayout() {
           },
         });
     };
+
     window.addEventListener("kurio:session-expired", expire);
+
     return () => window.removeEventListener("kurio:session-expired", expire);
   }, [qc, navigate]);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [location.pathname]);
+
   const account = /^\/(profile|wallets|favorites)/.test(location.pathname);
   const order = location.pathname.startsWith("/order");
   const purchase = /^\/(nft|cart|checkout)/.test(location.pathname);
+
   return (
     <>
       <a className="skip-link" href="#main">
@@ -48,9 +57,9 @@ export function AppLayout() {
         {!account && !order && <Footer />}
         <div className="site-status">
           <Realtime />
-          <a href="/demo">Demonstração</a>
         </div>
       </div>
+      <DemoWidget />
       <Toaster
         position="top-right"
         theme="dark"

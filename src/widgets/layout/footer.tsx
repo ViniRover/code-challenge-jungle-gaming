@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Button } from "../../shared/ui/button";
+
 const notice = () =>
   toast.info("Esta seção editorial não faz parte da demonstração.");
+
 export function Footer() {
   return (
     <footer className="site-footer">
@@ -35,6 +37,7 @@ export function Footer() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+
               toast.info(
                 "A newsletter não está disponível nesta demonstração. Nenhum e-mail foi enviado.",
               );

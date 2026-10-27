@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { catalogApi } from "../api";
 import { keys } from "../../../shared/api/keys";
 import { NftCard } from "./nft-card";
+
 export function RelatedNfts({
   exclude = "",
   title = "Mais desta coleção",
@@ -13,6 +14,7 @@ export function RelatedNfts({
     queryKey: keys.catalog({}),
     queryFn: ({ signal }) => catalogApi.list({}, signal),
   });
+
   return (
     <section className="related">
       <h2>{title}</h2>

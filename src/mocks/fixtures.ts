@@ -1,4 +1,5 @@
 import type { Nft, User, Wallet } from "../shared/domain/models";
+
 const names = [
   "Emerald Ape #042",
   "Sage Nomad #009",
@@ -10,7 +11,9 @@ const names = [
   "Golden Frequency #071",
   "Golden Signal #160",
 ];
+
 const ids = ["042", "009", "552", "118", "314", "088", "207", "071", "160"];
+
 const prices = [
   "1.19",
   "1.69",
@@ -22,6 +25,7 @@ const prices = [
   "0.59",
   "0.39",
 ];
+
 const images = [
   "emerald",
   "violet",
@@ -33,6 +37,7 @@ const images = [
   "golden",
   "golden",
 ];
+
 const categories = [
   "Arte digital",
   "Fotografia",
@@ -44,8 +49,10 @@ const categories = [
   "Assinaturas",
   "Utilidade",
 ];
+
 export const nftFixtures: Nft[] = Array.from({ length: 36 }, (_, index) => {
   const i = index % 9;
+
   return {
     id: index < 9 ? ids[i] : String(600 + index),
     name: index < 9 ? names[i] : `${names[i].split(" #")[0]} #${600 + index}`,
@@ -63,6 +70,7 @@ export const nftFixtures: Nft[] = Array.from({ length: 36 }, (_, index) => {
     createdAt: 36 - index,
   };
 });
+
 export const userFixtures: User[] = [
   {
     id: "collector-1",
@@ -83,6 +91,7 @@ export const userFixtures: User[] = [
     avatar: "",
   },
 ];
+
 export const walletFixtures = (user: User): Wallet[] => [
   {
     id: `${user.id}-main`,

@@ -4,6 +4,7 @@ import type {
   CatalogSearch,
   Nft,
 } from "../../shared/domain/models";
+
 export const catalogApi = {
   list: (params: CatalogSearch, signal?: AbortSignal) =>
     http.get<CatalogPage>("/nfts", { params, signal }).then((r) => r.data),

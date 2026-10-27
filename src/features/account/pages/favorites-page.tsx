@@ -11,15 +11,19 @@ import {
   LoadingGrid,
 } from "../../../shared/ui/feedback";
 import { usePageTitle } from "../../../shared/hooks/use-page-title";
+
 export default function FavoritesPage() {
   usePageTitle("Lista de interesse");
+
   const favorites = useFavorites();
+
   const queries = useQueries({
     queries: (favorites.data || []).map((id) => ({
       queryKey: keys.nft(id),
       queryFn: () => catalogApi.detail(id),
     })),
   });
+
   return (
     <AccountLayout>
       <h1>Lista de interesse</h1>

@@ -1,9 +1,12 @@
 import type { OrderRequest } from "../../shared/domain/models";
+
 export interface Attempt {
   key: string;
   request: OrderRequest;
 }
+
 const key = (owner: string) => `kurio.attempt.${owner}`;
+
 export const attemptStorage = {
   get(owner: string): Attempt | null {
     try {

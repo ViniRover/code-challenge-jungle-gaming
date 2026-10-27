@@ -6,10 +6,12 @@ import { keys } from "../../../shared/api/keys";
 import { Button } from "../../../shared/ui/button";
 import { ErrorState } from "../../../shared/ui/feedback";
 import { toast } from "sonner";
+
 export function CouponForm({ applied }: { applied: string }) {
   const [code, setCode] = useState(applied);
   const owner = useIdentity();
   const qc = useQueryClient();
+
   const m = useMutation({
     mutationFn: cartApi.coupon,
     onSuccess: (cart) => {
@@ -17,6 +19,7 @@ export function CouponForm({ applied }: { applied: string }) {
       toast.success(cart.coupon ? "Cupom aplicado." : "Cupom removido.");
     },
   });
+
   return (
     <div className="coupon-section">
       <form

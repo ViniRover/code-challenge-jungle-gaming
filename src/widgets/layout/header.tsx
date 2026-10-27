@@ -11,12 +11,14 @@ import { useSession } from "../../features/auth/hooks";
 import { useCart } from "../../features/cart/hooks";
 import { buttonVariants } from "../../shared/ui/button";
 import { toast } from "sonner";
+
 export function Header() {
   const { data: session } = useSession();
   const { data: cart } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
   const marketplace = /nft|cart|checkout|order/.test(location.pathname);
+
   return (
     <>
       <header className="site-header">
@@ -61,6 +63,7 @@ export function Header() {
             aria-label="Buscar NFTs"
             onClick={() => {
               navigate({ to: "/", hash: "catalogo" });
+
               setTimeout(
                 () => document.getElementById("catalog-search")?.focus(),
                 100,

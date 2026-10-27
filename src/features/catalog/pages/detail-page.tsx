@@ -35,13 +35,17 @@ import {
 import { errorMessage } from "../../../shared/api/client";
 import { RelatedNfts } from "../components/related-nfts";
 import { usePageTitle } from "../../../shared/hooks/use-page-title";
+
 export default function DetailPage() {
   const { id } = useParams({ strict: false }) as { id: string };
+
   const query = useQuery({
     queryKey: keys.nft(id),
     queryFn: ({ signal }) => catalogApi.detail(id, signal),
   });
+
   usePageTitle(query.data?.name || "Detalhes do NFT");
+
   const [edition, setEdition] = useState<Edition>("1/50");
   const [quantity, setQuantity] = useState(1);
   const [zoom, setZoom] = useState(false);
@@ -54,6 +58,7 @@ export default function DetailPage() {
   const favorite = useFavoriteMutation();
   const navigate = useNavigate();
   const location = useLocation();
+
   if (query.isPending)
     return (
       <div
@@ -65,6 +70,7 @@ export default function DetailPage() {
         <Skeleton className="detail-skeleton" />
       </div>
     );
+
   if (query.isError)
     return (
       <>
@@ -72,14 +78,18 @@ export default function DetailPage() {
         <Link to="/">Voltar ao catálogo</Link>
       </>
     );
+
   const nft = query.data;
   const stock = nft.editions[edition];
   const selected = favorites.data?.includes(id) || false;
+
   const toggleFavorite = () => {
     if (owner === "guest") {
       navigate({ to: "/login", search: { redirect: location.href } });
+
       return;
     }
+
     favorite.mutate(
       { id, selected: !selected },
       {
@@ -89,33 +99,41 @@ export default function DetailPage() {
       },
     );
   };
+
   const add = (checkout: boolean) => {
     if (!cart) return;
+
     const existing = cart.items.find(
       (i) => i.nftId === id && i.edition === edition,
     );
+
     if ((existing?.quantity || 0) + quantity > stock) {
       toast.error(
         "A quantidade total ultrapassa a disponibilidade desta edição.",
       );
+
       return;
     }
+
     const items = existing
       ? cart.items.map((i) =>
           i === existing ? { ...i, quantity: i.quantity + quantity } : i,
         )
       : [...cart.items, { nftId: id, edition, quantity }];
+
     mutation.mutate(
       { items, version: cart.version },
       {
         onSuccess: () => {
           toast.success("NFT adicionado ao carrinho.");
+
           if (checkout) navigate({ to: "/cart" });
         },
         onError: (e) => toast.error(errorMessage(e)),
       },
     );
   };
+
   return (
     <>
       <div className="breadcrumb">
@@ -256,6 +274,7 @@ export default function DetailPage() {
                     ? location.href
                     : window.location.href,
                 );
+
                 toast.success("Link copiado.");
               }}
             >

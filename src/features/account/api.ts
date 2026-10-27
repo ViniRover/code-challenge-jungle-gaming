@@ -1,5 +1,6 @@
 import { http } from "../../shared/api/client";
 import type { User, Wallet } from "../../shared/domain/models";
+
 export const accountApi = {
   profile: () => http.get<User>("/profile").then((r) => r.data),
   update: (data: Omit<User, "id">) =>

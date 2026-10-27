@@ -3,6 +3,7 @@ import { authApi } from "./api";
 import { keys } from "../../shared/api/keys";
 import { tokenStore } from "../../shared/api/client";
 import type { Session } from "../../shared/domain/models";
+
 export function useSession() {
   return useQuery({
     queryKey: keys.session,
@@ -11,12 +12,16 @@ export function useSession() {
     staleTime: 30000,
   });
 }
+
 export function useIdentity() {
   const { data } = useSession();
+
   return data?.user.id || "guest";
 }
+
 export function useSessionActions() {
   const qc = useQueryClient();
+
   return {
     accept: async (session: Session) => {
       await qc.cancelQueries();

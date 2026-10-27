@@ -1,5 +1,6 @@
 import { http } from "../../shared/api/client";
 import type { Session } from "../../shared/domain/models";
+
 export const authApi = {
   session: (signal?: AbortSignal) =>
     http.get<Session | null>("/session", { signal }).then((r) => r.data),

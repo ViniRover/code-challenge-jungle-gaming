@@ -11,6 +11,7 @@ import { useSessionActions } from "../hooks";
 import { loginSchema, registerSchema } from "../../../shared/domain/validation";
 import { Button } from "../../../shared/ui/button";
 import { ErrorState } from "../../../shared/ui/feedback";
+
 export function AuthForm({
   registerMode,
   redirect,
@@ -22,6 +23,7 @@ export function AuthForm({
   const navigate = useNavigate();
   const { accept } = useSessionActions();
   const schema = registerMode ? registerSchema : loginSchema;
+
   const form = useForm<{
     name?: string;
     email: string;
@@ -31,6 +33,7 @@ export function AuthForm({
     resolver: zodResolver(schema),
     defaultValues: { name: "", email: "", password: "", confirm: "" },
   });
+
   const m = useMutation({
     mutationFn: (data: {
       name?: string;
@@ -49,6 +52,7 @@ export function AuthForm({
     onSuccess: async (session) => {
       await accept(session);
       await navigate({ to: redirect });
+
       toast.success(
         registerMode
           ? "Conta criada. Bem-vindo à Kurio!"
@@ -56,6 +60,7 @@ export function AuthForm({
       );
     },
   });
+
   const input = (
     name: "name" | "email" | "password" | "confirm",
     placeholder: string,
@@ -103,6 +108,7 @@ export function AuthForm({
       )}
     </div>
   );
+
   return (
     <>
       <form onSubmit={form.handleSubmit((data) => m.mutate(data))} noValidate>

@@ -1,4 +1,5 @@
 import { Minus, Plus } from "lucide-react";
+
 export function Quantity({
   value,
   max,

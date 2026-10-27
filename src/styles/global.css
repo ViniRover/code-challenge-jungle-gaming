@@ -2778,3 +2778,112 @@ a.bg-primary {
   align-items: center;
   justify-content: center;
 }
+
+/* Demo launcher remains independent from the current page and its forms. */
+.demo-launcher {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 35;
+  border-radius: 999px;
+  min-height: 48px;
+  box-shadow: 0 8px 28px #0008;
+}
+.demo-panel {
+  position: fixed;
+  right: 24px;
+  bottom: 84px;
+  z-index: 60;
+  width: min(390px, calc(100vw - 32px));
+  max-height: min(680px, calc(100dvh - 112px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--foreground);
+  background: #281812;
+  border: 1px solid #a56e3e;
+  border-radius: 16px;
+  box-shadow: 0 16px 60px #000a;
+}
+.demo-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px;
+  background: #382215;
+  border-bottom: 1px solid #a56e3e;
+}
+.demo-panel-header h2 {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.demo-panel-header p {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #d6b893;
+}
+.demo-panel-header button {
+  flex-shrink: 0;
+}
+.demo-panel-body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 20px;
+}
+.demo-controls {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.demo-controls label {
+  display: block;
+  margin: 18px 0;
+  font-weight: 600;
+}
+.demo-controls input,
+.demo-controls select {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  min-height: 42px;
+}
+.demo-controls fieldset {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.demo-controls fieldset:disabled {
+  opacity: 0.65;
+}
+.demo-controls .demo-actions {
+  display: grid;
+  gap: 8px;
+  margin: 20px 0;
+}
+.demo-controls button {
+  width: 100%;
+  white-space: normal;
+  text-align: left;
+  justify-content: flex-start;
+}
+.demo-controls > p {
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+  color: #d6b893;
+}
+@media (max-width: 600px) {
+  .demo-launcher {
+    right: 16px;
+    bottom: calc(100px + env(safe-area-inset-bottom));
+    min-height: 44px;
+    padding: 10px;
+  }
+  .demo-launcher span {
+    display: none;
+  }
+  .demo-panel {
+    right: 16px;
+    bottom: calc(154px + env(safe-area-inset-bottom));
+    max-height: calc(100dvh - 174px - env(safe-area-inset-bottom));
+  }
+}
