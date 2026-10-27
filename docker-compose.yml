@@ -1,0 +1,25 @@
+services:
+  marketplace:
+    build:
+      context: .
+      target: production
+      args:
+        VITE_MOCKS: "true"
+    ports:
+      - "4173:4173"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4173').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+  dev:
+    profiles: [dev]
+    build:
+      context: .
+      target: development
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
