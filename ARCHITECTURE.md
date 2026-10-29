@@ -2,9 +2,7 @@
 
 ## Organização e SOLID
 
-Arquitetura por funcionalidades, inspirada em Feature-Sliced Design sem camadas vazias. app compõe; features implementa casos de uso; widgets compõe navegação; shared oferece contratos e primitivas. Páginas coordenam componentes, hooks e APIs. Regras de cotação/pedido ficam nos serviços da simulação de backend.
-
-SRP: apresentação, formulário, transporte, dinheiro e persistência em arquivos separados. DIP: componentes dependem de APIs tipadas, cujo backend pode mudar sem reescrever a interface. ISP: props/contratos pequenos. OCP: composição React e variantes permitem extensão sem duplicar primitivas. Não há hierarquia artificial de classes; interfaces compartilhadas preservam substituição dos contratos (LSP). Checkout depende intencionalmente de carrinho e conta para compor o fluxo.
+Arquitetura por funcionalidades; features implementa casos de uso; widgets compõe navegação; shared oferece contratos e primitivas. Páginas coordenam componentes, hooks e APIs. Regras de cotação/pedido ficam nos serviços da simulação de backend.
 
 ## Rede e simulação
 
@@ -14,7 +12,7 @@ A persistência sustenta refresh, mas não é um banco concorrente distribuído:
 
 ## Sessão e cache
 
-Bearer simulado com validade de uma hora, recuperado via GET /session. Backend simulado verifica dono; pedidos de outro usuário retornam 404 para não revelar existência. Senhas PBKDF2/SHA-256, salt individual e 100 mil iterações, sem texto claro. Tokens e dados locais são visíveis ao próprio navegador: este modelo não substitui segurança de backend real.
+Bearer simulado com validade de uma hora, recuperado via GET /session. Backend simulado verifica dono; pedidos de outro usuário retornam 404 para não revelar existência. Senhas PBKDF2/SHA-256, salt individual e 100 mil iterações, sem texto claro.
 
 Router protege checkout, perfil, carteiras, favoritos e pedidos, preservando destino interno após login. Rascunho de checkout em sessionStorage é separado por usuário e removido após confirmação/reset. A carteira exige reconexão. Logout/401 limpa cache privado e subscriptions. Queries incluem usuário/recurso/parâmetros. Atualização tardia de perfil só altera a sessão se o usuário ainda corresponder.
 
@@ -36,19 +34,11 @@ Eventos contêm id,resourceId,version,data,userId quando privado. Cliente rejeit
 
 ## Design e acessibilidade
 
-Referências: 15 PNGs fornecidos. Sem assets individuais ou metadados/fontes do Figma, quatro artes foram recortadas das exportações e convertidas para WebP. Roboto Mono local aproxima a fonte monoespaçada; Lucide substitui ícones não exportados. Não se presume medição pixel-perfect a partir das screenshots.
-
 Preservados fundo marrom escuro, laranja, hierarquia, hero, grid/sidebar desktop, navegação inferior mobile, galeria, cartões e formulários. Perfil/carteiras/recibo adaptados para mobile sem frame próprio; tablet intermediário. Autenticação usa modal desktop/tela mobile. Números e badges vêm da simulação, não de números inconsistentes nos frames.
 
 Adaptações: revisão de compra, autorização/recusa, erros/vazios/pending, títulos acessíveis, ação separada de senha, drawer de filtros, favoritos e indicador de conexão. Checkout deriva campos da carteira cadastrada para evitar contradições; nome/e-mail/observação editáveis. Conteúdos fora do escopo comunicam limitação. Não se abre um explorador real com hash fictício.
 
 Button/Dialog seguem shadcn/ui via cva/Tailwind/Radix. Foco visível, skip link, labels/aria-describedby, erros por campo, focus trap, feedback acessível e alt texts. Shimmer respeita reduced-motion; skeletons reservam espaço. Ajustes de contraste e alvos de interação melhoram legibilidade.
-
-## Operação e limites
-
-Chunks por rota, WebP, fontes locais e gzip. Vercel tem fallback SPA e Service Worker sem cache persistente. Docker produção não inclui node_modules e não roda como root. CI cobre tipos/lint/unidade/build/E2E. Baselines visuais são Windows; relatórios registram condições.
-
-Não há blockchain, OAuth, carteira externa ou pagamento real, conforme escopo. Nenhum dado é enviado a esses serviços. Desativar MSW exige backend compatível. Simulação local não pretende validar economicamente redes/tokens nem funcionar como produto financeiro.
 
 ### Painel de demonstração
 
